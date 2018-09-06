@@ -69,19 +69,19 @@ class CityService{
         }
         $cities = json_encode($cities);
         
-        if($argument === null){
-            $this->fileSystem->dumpFile(sys_get_temp_dir() . '/' . 'data.json', $cities);
-            return 'Passed';
-        }
-
-        $this->fileSystem->dumpFile($argument . '/' . 'data.json', $cities);
-
         $sql = 'TRUNCATE cities_api.city';
 
         $stmt = $this->em->getConnection()->query($sql);
         $stmt->execute();
 
-        return 'Passed';
+        if($argument === null){
+            $this->fileSystem->dumpFile(sys_get_temp_dir() . '/' . 'data.json', $cities);
+            return 'Succefully dumped json and deleted database';
+        }
+
+        $this->fileSystem->dumpFile($argument . '/' . 'data.json', $cities);
+
+        return 'Succefully dumped json and deleted database';
         
         } catch (IOExceptionInterface $exception) {
             return "An error occurred while creating your directory at ".$exception->getPath();
