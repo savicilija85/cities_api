@@ -2,30 +2,27 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Service\OpenDataSoftService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use AppBundle\Service\CityService;
 
-class PopulationGetCommand extends ContainerAwareCommand
+class PopulationClearCommand extends ContainerAwareCommand
 {
+    private $cityService;
 
-    private $open;
-
-    public function __construct($name = null, OpenDataSoftService $open){
-
+    public function __construct($name = null, CityService $cityService){
         parent::__construct();
-        $this->open = $open;
-        
+        $this->cityService = $cityService;
     }
-
+    
     protected function configure()
     {
         $this
-            ->setName('population:get')
-            ->setDescription('Get cities from external API, argument can be passed in integer format')
+            ->setName('population:clear')
+            ->setDescription('Clears all cities in database and dump file in json format, directory can be passed in format ex.: /user')
             ->addArgument('argument', InputArgument::OPTIONAL, 'Argument description')
             ->addOption('option', null, InputOption::VALUE_NONE, 'Option description')
         ;
@@ -38,8 +35,9 @@ class PopulationGetCommand extends ContainerAwareCommand
         if ($input->getOption('option')) {
             // ...
         }
-        $message = $this->open->getCities($argument);
-        $output->writeln($message);
+        $data = $this->cityService->deleteAllEntriesAndDumpJson($argument);
+        
+        $output->writeln($data);
     }
 
 }
