@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CityController extends Controller{
 
     /**
-     * @Route("/api/cities",name="show_cities")
+     * @Route("/api/cities")
      * @Method({"GET"})
      */
     public function showCities(){
@@ -41,7 +41,7 @@ class CityController extends Controller{
     }
 
     /**
-     * @Route("/api/cities/{id}",name="show_city")
+     * @Route("/api/cities/{id}")
      * @Method({"GET"})
      */
     public function getCity($id){
@@ -69,7 +69,7 @@ class CityController extends Controller{
     }
 
     /**
-     * @Route("/api/cities/{id}",name="delete_city")
+     * @Route("/api/cities/{id}")
      * @Method({"DELETE"})
      */
     public function deleteCity($id){
