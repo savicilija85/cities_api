@@ -68,23 +68,29 @@ class CityService{
             return 'Database is already empty';
         }
         $cities = json_encode($cities);
-        
-        $sql = 'TRUNCATE cities_api.city';
-
-        $stmt = $this->em->getConnection()->query($sql);
-        $stmt->execute();
 
         if($argument === null){
+
             $this->fileSystem->dumpFile(sys_get_temp_dir() . '/' . 'data.json', $cities);
+            $sql = 'TRUNCATE cities_api.city';
+
+            $stmt = $this->em->getConnection()->query($sql);
+            $stmt->execute();
+
             return 'Succefully dumped json and deleted database';
         }
 
         $this->fileSystem->dumpFile($argument . '/' . 'data.json', $cities);
 
+            $sql = 'TRUNCATE cities_api.city';
+
+            $stmt = $this->em->getConnection()->query($sql);
+            $stmt->execute();
+
         return 'Succefully dumped json and deleted database';
         
         } catch (IOExceptionInterface $exception) {
-            return "An error occurred while creating your directory at ".$exception->getPath();
+            return "An error occurred while creating your directory at ".$exception->getPath() . " insert argument as: directory_name/sub_directory";
         } catch (\Exception $e){
             return 'Error: ' . $e->getMessage();
         }
